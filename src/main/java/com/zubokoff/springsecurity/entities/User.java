@@ -25,6 +25,8 @@ public class User {
 
     private String password;
 
+    private String token;
+
     @ManyToMany
     private List<Role> roles;
 }

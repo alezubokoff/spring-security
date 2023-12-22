@@ -1,6 +1,8 @@
 package com.zubokoff.springsecurity.configs;
 
 import com.zubokoff.springsecurity.security.WebSecurityFilter;
+import jakarta.servlet.Filter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,7 +15,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
+
+    private final WebSecurityFilter webSecurityFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -22,7 +27,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/public/**").permitAll()
                         .anyRequest().authenticated())
-                .addFilterBefore(new WebSecurityFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(webSecurityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }
